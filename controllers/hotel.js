@@ -78,6 +78,15 @@ export const countByType = async(req, res, next) =>{
     }
 }
 
+export const getByType = async(req, res, next)=>{
+     const ptype = req.query.type;
+     try {
+        const list = await Hotel.find({type : ptype});
+        res.status(200).json(list)
+     } catch (error) {
+        next(err); 
+     }
+}
 
 export const getHotelRooms = async(req,res,next)=>{
     try {

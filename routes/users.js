@@ -22,7 +22,7 @@ router.put("/:id",verifyUser, updateUser);
 router.delete("/:id",verifyUser ,deleteUser);
 
 //get user
-router.get("/:id",verifyUser, getUser);
+router.get("/:id", getUser);
 
 //get All users
 router.get("/",verifyAdmin, getUsers) 

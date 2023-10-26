@@ -35,6 +35,7 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use(bodyParser.urlencoded({extended: true}));
+
 app.use('/api/auth', authRoute);
 app.use('/api/hotels', hotelsRoute);
 app.use('/api/users', usersRoute);
