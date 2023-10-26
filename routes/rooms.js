@@ -1,6 +1,6 @@
 import express from 'express'
 import {verifyAdmin} from "../utils/verifyToken.js"
-import {createRoom, updateRoom, getRoom, getRooms, deleteRoom, updateRoomAvailability} from "../controllers/room.js"
+import {createRoom, updateRoom, getRoom, getRooms, deleteRoom, updateRoomAvailability, bookRoom} from "../controllers/room.js"
 
 const router = express.Router();
 
@@ -22,5 +22,29 @@ router.get("/:id", getRoom);
 //get all rooms
 router.get("/", getRooms);
 
+//book a room
+router.post("/:userid/:hotelid/:id", bookRoom);
+
 
 export default router;
+
+// {
+//     "title" : "Superior Apartment",
+//     "price" : "4200",
+//     "maxPeople" : "4",
+//     "desc" : "2 queen bed | 1 sofa bed | Entire apartment | 167 m² | Private kitchen | Attached bathroom | Air conditioning",
+//     "roomNumbers": [
+//         {
+//             "number": "301"
+//         },
+//         {
+//             "number": "302"
+//         },
+//         {
+//             "number": "303"
+//         },
+//         {
+//             "number": "304"
+//         }
+//     ]
+// }

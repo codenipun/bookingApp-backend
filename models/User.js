@@ -8,7 +8,17 @@ const userSchema = new mongoose.Schema({
     country : {type : String, required : true},
     img : {type : String},
     city : {type : String, required : true},
-    phone : {type : String, required : true}
+    phone : {type : String, required : true},
+    bookings: [{
+        checkin : {type : Date},
+        checkout : {type : Date},
+        hotelId : {type : String},
+        hotelName : {type : String},
+        hotelImg : {type : String},
+        bookingDate : {type : Date},
+        roomId : {type : String},
+        price : {type : Number}
+    }]
 }, {timestamps:true})
 
 export default mongoose.model("User", userSchema);
