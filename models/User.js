@@ -10,12 +10,12 @@ const userSchema = new mongoose.Schema({
     city : {type : String, required : true},
     phone : {type : String, required : true},
     bookings: [{
-        checkin : {type : Date},
-        checkout : {type : Date},
+        checkin : {type : String},
+        checkout : {type : String},
         hotelId : {type : String},
         hotelName : {type : String},
         hotelImg : {type : String},
-        bookingDate : {type : Date},
+        bookingDate : {type : String},
         roomId : {type : String},
         price : {type : Number}
     }]
