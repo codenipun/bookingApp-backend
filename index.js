@@ -10,6 +10,7 @@ import bodyParser from "body-parser";
 import cors from "cors"
 
 const app = express();
+mongoose.set('strictQuery', true);
 dotenv.config();
 
 const connect = async()=>{
