@@ -42,13 +42,15 @@ app.use('/api/hotels', hotelsRoute);
 app.use('/api/users', usersRoute);
 app.use('/api/rooms', roomsRoute);
 
-app.use((err, req, res, next)=>{
+app.use((err, req, res) => {
     const errorStatus = err.status || 500;
-    const errorMessage = req.message || "Something went wrong"
+    const message = req.message || "Something went wrong";
+    const errorMessage = err.message;
     return res.status(errorStatus).json({
         success : false,
         status : errorStatus,
-        message : errorMessage,
+        message : message,
+        error: errorMessage,
         stack : err.stack
     })
 })
@@ -56,4 +58,3 @@ app.listen(process.env.PORT || 3001, ()=>{
     connect();
     console.log("connected to backend");
 });
-

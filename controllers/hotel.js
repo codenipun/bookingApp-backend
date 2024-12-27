@@ -35,16 +35,52 @@ export const getHotel = async(req, res, next) =>{
         next(err);
     }
 }
-export const getHotels = async(req, res, next) =>{
-    const {min=0, max=49999, ...others} = req.query;
+
+export const getHotels = async(req, res, next) => {
+    const { 
+        min = 0, 
+        max = 49999, 
+        page = 1, 
+        limit = 10, 
+        sortOrder = "asc", 
+        sortBy = "cheapestPrice", 
+        ...others 
+    } = req.query;
 
     try {
-        const hotels = await Hotel.find({...others, cheapestPrice:{$gt:min, $lt:max}}).limit(req.query.limit);
-        res.status(200).json(hotels);  
+        const skip = (page - 1) * limit;
+
+        const sort = sortOrder === "asc" ? 1 : -1;
+
+        const sortField = sortBy === "rating" ? "rating" : "cheapestPrice";
+
+        const hotels = await Hotel.find({
+            ...others,
+            cheapestPrice: { $gt: min, $lt: max },
+        })
+        .sort({ [sortField]: sort })
+        .skip(Number(skip))
+        .limit(Number(limit));
+
+        const totalHotels = await Hotel.countDocuments({
+            ...others,
+            cheapestPrice: { $gt: min, $lt: max },
+        });
+
+        // const totalPages = Math.ceil(totalHotels / limit);
+
+        res.status(200).json({
+            success: true,
+            data: hotels,
+            rows: totalHotels,
+            // totalPages,
+            page: Number(page),
+            // limit: Number(limit),
+        });
     } catch (err) {
         next(err);
     }
-}
+};
 
 export const countByCity = async(req, res, next) =>{
     const cities = req.query.cities.split(",");

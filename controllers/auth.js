@@ -4,22 +4,45 @@ import {createError} from "../utils/error.js"
 import jwt from "jsonwebtoken";
 
 const saltRound = 10;
-export const register = async(req, res, next)=>{
+export const register = async(req, res, next) => {
     try {
-        const password_to_hash = req.body.password;
-        const salt = bcrypt.genSaltSync(saltRound);
-        const hash = bcrypt.hashSync(password_to_hash, salt);
+        const { username, email, phone, password } = req.body;
+
+        const existingUsername = await User.findOne({ username });
+        if(existingUsername) {
+            return next(createError(400, "Username already exists!"));
+        }
+
+        const existingEmail = await User.findOne({ email });
+        if(existingEmail) {
+            return next(createError(400, "Email already exists!"));
+        }
+
+        const existingPhone = await User.findOne({ phone });
+
+        if(existingPhone) {
+            return next(createError(400, "Phone number already exists!"));
+        }
         
+        if(phone.length !== 10){
+            return next(createError(400, 'Phone Number Should be of 10 digits only'))
+        }
+
+        const salt = bcrypt.genSaltSync(saltRound);
+        const hash = bcrypt.hashSync(password, salt);
+
         const newUser = new User({
             ...req.body,
-            password : hash,
-        })
+            password: hash,
+        });
+
         await newUser.save();
-        res.status(200).send("User has been created")
+        res.status(200).send("User has been created");
     } catch (err) {
         next(err);
     }
-}
+};
+
 export const login = async(req, res, next)=>{
     try {
         const user = await User.findOne({username : req.body.username});
